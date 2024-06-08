@@ -73,5 +73,14 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    function ({ addUtilities }) {
+      addUtilities({
+        ".dropdown-menu-content-size-adjust": {
+          width: "var(--radix-dropdown-menu-trigger-width)",
+        },
+      });
+    },
+  ],
 }

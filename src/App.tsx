@@ -20,7 +20,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./components/ui/select";
-import { TrashIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { PlusIcon, TrashIcon } from "lucide-react";
 import {
   Page,
   Text,
@@ -28,7 +34,6 @@ import {
   Document,
   StyleSheet,
   PDFDownloadLink,
-  PDFViewer,
   // PDFViewer,
 } from "@react-pdf/renderer";
 import { useState } from "react";
@@ -230,10 +235,11 @@ function App() {
                     startingNumber: "1",
                   });
                 }}
-                className="w-[200px] self-end mb-2"
-                variant={"secondary"}
+                className="self-end mb-2"
+                variant={"outline"}
+                size={"icon"}
               >
-                Add Table Number
+                <PlusIcon />
               </Button>
             </div>
             {fields.map((field, index) => (
@@ -284,68 +290,65 @@ function App() {
             ))}
           </div>
 
-          <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div className="col-span-1 md:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-2">
             <Button type="submit">Generate PDF</Button>
-            <Button
-              type="button"
-              variant={"secondary"}
-              disabled={!isFormValid}
-              asChild={isFormValid}
-            >
-              {!isFormValid ? (
-                "Please fill the form"
-              ) : (
-                <PDFDownloadLink
-                  document={
-                    formvalues.tableType === "multiplication" ? (
-                      <MultiplicationTablesPDF data={formvalues} />
-                    ) : (
-                      <DivisionTablesPDF data={formvalues} />
-                    )
-                  }
-                  fileName="multiplication-tables.pdf"
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild type="button">
+                <Button
+                  type="button"
+                  variant={"secondary"}
+                  disabled={!isFormValid}
                 >
-                  {({ loading }) =>
-                    loading ? "Loading document..." : "Download Questions"
-                  }
-                </PDFDownloadLink>
-              )}
-            </Button>
-            <Button
-              type="button"
-              variant={"outline"}
-              disabled={!isFormValid}
-              asChild={isFormValid}
-            >
-              {!isFormValid ? (
-                "Please fill the form"
-              ) : (
-                <PDFDownloadLink
-                  document={
-                    formvalues.tableType === "multiplication" ? (
-                      <MultiplicationTablesPDF data={formvalues} showAnswers />
-                    ) : (
-                      <DivisionTablesPDF data={formvalues} showAnswers />
-                    )
-                  }
-                  fileName="multiplication-tables.pdf"
-                >
-                  {({ loading }) =>
-                    loading ? "Loading document..." : "Download Answers"
-                  }
-                </PDFDownloadLink>
-              )}
-            </Button>
+                  {isFormValid ? "Download PDF" : "Fill the form"}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="dropdown-menu-content-size-adjust">
+                <DropdownMenuItem>
+                  <PDFDownloadLink
+                    document={
+                      formvalues.tableType === "multiplication" ? (
+                        <MultiplicationTablesPDF data={formvalues} />
+                      ) : (
+                        <DivisionTablesPDF data={formvalues} />
+                      )
+                    }
+                    fileName="multiplication-tables.pdf"
+                  >
+                    {({ loading }) =>
+                      loading ? "Loading document..." : "Download Questions"
+                    }
+                  </PDFDownloadLink>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <PDFDownloadLink
+                    document={
+                      formvalues.tableType === "multiplication" ? (
+                        <MultiplicationTablesPDF
+                          data={formvalues}
+                          showAnswers
+                        />
+                      ) : (
+                        <DivisionTablesPDF data={formvalues} showAnswers />
+                      )
+                    }
+                    fileName="multiplication-tables.pdf"
+                  >
+                    {({ loading }) =>
+                      loading ? "Loading document..." : "Download Answers"
+                    }
+                  </PDFDownloadLink>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </div>
 
-          <PDFViewer className="col-span-2 mt-4 h-[500px] border w-full">
-            {/* <MultiplicationTablesPDF data={formvalues} /> */}
+          {/* <PDFViewer className="col-span-2 mt-4 h-[500px] border w-full">
             {formvalues.tableType === "multiplication" ? (
               <MultiplicationTablesPDF data={formvalues} />
             ) : (
               <DivisionTablesPDF data={formvalues} />
             )}
-          </PDFViewer>
+          </PDFViewer> */}
         </form>
       </Form>
     </div>
@@ -379,7 +382,6 @@ const styles = StyleSheet.create({
   tableRow: {
     flexDirection: "row",
     padding: 3,
-    // gap: 5,
   },
   tableQuestion: {
     fontSize: 14,
@@ -440,7 +442,13 @@ const MultiplicationTablesPDF = ({
                           =
                         </Text>
                         <Text
-                          style={{ ...styles.tableQuestion, marginLeft: 12 }}
+                          style={{
+                            ...styles.tableQuestion,
+                            marginLeft: 12,
+                            border: 1,
+                            paddingHorizontal: 2,
+                            flex: 1,
+                          }}
                         >
                           {showAnswers
                             ? multiplicationNumber * numberToMultiply
