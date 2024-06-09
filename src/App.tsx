@@ -112,7 +112,9 @@ function App() {
   return (
     <div className="min-h-screen min-w-screen p-4">
       <div className="flex justify-between">
-        <h1 className="text-2xl">Multiplication/Division Tables Generator</h1>
+        <h1 className="text-lg md:text-2xl">
+          Multiplication/Division Tables Generator
+        </h1>
         <ModeToggle />
       </div>
 
@@ -539,8 +541,8 @@ const DivisionTablesPDF = ({
                             }}
                           >
                             {showAnswers
-                              ? Math.floor(
-                                  multiplicationNumber / numberToDivide
+                              ? (multiplicationNumber / numberToDivide).toFixed(
+                                  3
                                 )
                               : "               "}
                           </Text>
@@ -561,13 +563,7 @@ const DivisionTablesPDF = ({
                             }}
                           >
                             {showAnswers
-                              ? (multiplicationNumber / numberToDivide) % 1 !==
-                                0
-                                ? "." +
-                                  (multiplicationNumber / numberToDivide)
-                                    .toFixed(3)
-                                    .split(".")[1]
-                                : 0
+                              ? multiplicationNumber % numberToDivide
                               : "          "}
                           </Text>
                         </View>
