@@ -534,8 +534,8 @@ const DivisionTablesPDF = ({
                             style={{
                               ...styles.tableQuestion,
                               marginLeft: 4,
-                              border: 1,
-                              paddingHorizontal: 2,
+                              // border: 1,
+                              // paddingHorizontal: 2,
                             }}
                           >
                             {showAnswers
@@ -556,12 +556,18 @@ const DivisionTablesPDF = ({
                             style={{
                               ...styles.tableQuestion,
                               marginLeft: 4,
-                              border: 1,
-                              paddingHorizontal: 2,
+                              // border: 1,
+                              // paddingHorizontal: 2,
                             }}
                           >
                             {showAnswers
-                              ? multiplicationNumber % numberToDivide
+                              ? (multiplicationNumber / numberToDivide) % 1 !==
+                                0
+                                ? "." +
+                                  (multiplicationNumber / numberToDivide)
+                                    .toFixed(3)
+                                    .split(".")[1]
+                                : 0
                               : "          "}
                           </Text>
                         </View>
