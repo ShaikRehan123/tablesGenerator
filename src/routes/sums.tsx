@@ -145,7 +145,8 @@ const SumsPage = () => {
               <Button
                 type="button"
                 onClick={() => {
-                  append({ value: "229.128,42.114,-112.143" });
+                  // append({ value: "229.128,42.114,-112.143" });
+                  append({ value: "" });
                 }}
               >
                 Add Row
